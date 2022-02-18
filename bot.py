@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 25 20:24:17 2020
-
-@author: karan
-"""
 import logging
 import random
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -11,13 +5,14 @@ import urllib.request
 import json
 import imdb
 import os
-PORT = int(os.environ.get('PORT', 5000))
-api_key= os.environ.get("BOT_TOKEN")
+
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+OMDB_API_KEY = '558c75c8'
+
 ia = imdb.IMDb() 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-list = ['558c75c8', '558c75c8']
 
 def start(update, context):
     update.message.reply_text('Hi! \nWelcome to the *IMDb Bot*. \nSend me the name of any movie or TV show to get its details. \nHappy viewing! \n \nCreated by [Karan Malik](https://karan-malik.github.io)',parse_mode='markdown')
@@ -31,11 +26,11 @@ def error(update, context):
 
 def reply(update, context):
     movie_name=update.message.text
-    search = ia.search_movie(movie_name) 
+    search = ia.search_movie(movie_name)
       
     id='tt'+search[0].movieID
     
-    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+random.choice(list)
+    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+OMDB_API_KEY
     
     x=urllib.request.urlopen(url)
     
@@ -56,7 +51,7 @@ def reply(update, context):
 
 def main():
 
-    updater = Updater(api_key, use_context=True)
+    updater = Updater(BOT_TOKEN, use_context=True)
     dp = updater.dispatcher
     
     dp.add_handler(CommandHandler("start", start))
@@ -64,10 +59,6 @@ def main():
     dp.add_handler(MessageHandler(Filters.text, reply))
     dp.add_error_handler(error)
 
-    #updater.start_webhook(listen="0.0.0.0",
-    #                      port=int(PORT),
-    #                      url_path="1476373283:AAHrdQE394_J8qd78J974y_AwVdwrsis1r0")
-    #updater.bot.setWebhook('https://imdb-movie-bot.herokuapp.com/' + "1476373283:AAHrdQE394_J8qd78J974y_AwVdwrsis1r0")
     updater.start_polling()
     updater.idle()
 
