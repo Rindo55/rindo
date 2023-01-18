@@ -6,7 +6,7 @@ import json
 import imdb
 import os
 
-BOT_TOKEN = "5787191452:AAGPcjesbDih65vqH5rUFbrxZ96yHemISi4₹
+BOT_TOKEN = "5787191452:AAGPcjesbDih65vqH5rUFbrxZ96yHemISi4"
 OMDB_API_KEY = '558c75c8'
 
 ia = imdb.IMDb() 
